@@ -16,9 +16,18 @@ async function listContacts() {
   return JSON.parse(data);
 }
 
+async function getContactById(contactID) {
+  const contacts = await listContacts();
+
+  const contact = contacts.find((contact) => contact.id === contactID);
+
+  return contact;
+}
+
 async function updateContacts(contacts) {
   return fs.appendFile(contactsPath, JSON.stringify(contacts));
 }
+
 async function addContact(contact) {
   const contacts = await listContacts();
 
@@ -31,12 +40,13 @@ async function addContact(contact) {
   return newContact;
 }
 
-async function getContactById(contactId) {
+async function removeContact(contactID) {
   const contacts = await listContacts();
+  const index = contacts.findIndex((contact) => contact.id === contactID);
 
-  const contact = contacts.find((contact) => contact.id === contactId);
+  if (index === -1) throw new Error("Contact not found");
 
-  return contact;
+  contacts.splice(index, 1);
 }
 
-module.exports = { listContacts, addContact, getContactById };
+module.exports = { listContacts, addContact, getContactById, removeContact };
