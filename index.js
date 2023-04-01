@@ -1,3 +1,3 @@
-const { readContacts } = require("./contacts");
+const { listContacts } = require("./contacts");
 
-readContacts().then(console.log).catch(console.error);
+listContacts().then(console.log).catch(console.error);
