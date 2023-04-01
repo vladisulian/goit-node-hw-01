@@ -28,10 +28,10 @@ async function updateContacts(contacts) {
   return fs.appendFile(contactsPath, JSON.stringify(contacts));
 }
 
-async function addContact(contact) {
+async function addContact(name, email, phone) {
   const contacts = await listContacts();
 
-  const newContact = { ...contact, id: nanoid(10) };
+  const newContact = { name, email, phone, id: nanoid(10) };
 
   contacts.push(newContact);
 
