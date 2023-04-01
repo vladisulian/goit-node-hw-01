@@ -1,19 +1,20 @@
 const fs = require("fs/promises");
 const path = require("path");
 
-const contactPath = "./db/contacts.json";
+const contactsPath = path.join(__dirname, "./db/contacts.json");
 
-function listContacts() {
-  const filePath = path.join(__dirname, contactPath);
-
+async function listContacts() {
   //? how filepath works :
   //? __dirname is the current directory
   //? +
   //? path to the file that notted in 2 arg.
 
-  const data = fs.readFile(filePath, "utf8");
+  const data = await fs.readFile(contactsPath, "utf8");
 
-  return data;
+  console.log("typeof data ===>", typeof data);
+  return JSON.parse(data);
 }
 
-module.exports = { readContacts: listContacts, listContacts };
+function getContactById(contactId) {}
+
+module.exports = { listContacts, getContactById };
