@@ -14,16 +14,17 @@ async function listContacts() {
   console.log("typeof data ===>", typeof data); // it's an object
   return JSON.parse(data);
 }
+
 function addContact(contacts) {
   return fs.writeFile(contactsPath, JSON.stringify(contacts), "utf-8");
 }
 
-function getContactById(contactId) {
-  const contacts = listContacts();
+async function getContactById(contactId) {
+  const contacts = await listContacts();
 
   const contact = contacts.find((contact) => contact.id === contactId);
 
   return contact;
 }
 
-module.exports = { listContacts, getContactById };
+module.exports = { listContacts, addContact, getContactById };
