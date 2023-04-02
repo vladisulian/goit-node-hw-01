@@ -1,21 +1,22 @@
 const fs = require("fs/promises");
 const path = require("path");
-const { nanoid } = require("nanoid"); //? npm i nanoid@3 -D (it's mean i install nanoid version 3 not current - 4)
+const { nanoid } = require("nanoid"); // npm i nanoid@3 -D (it's mean i install nanoid version 3 not current - 4)
 
 const contactsPath = path.join(__dirname, "./db/contacts.json");
 
-async function readContacts() {
-  //? how filepath works :
-  //? __dirname is the current directory
-  //? +
-  //? path to the file that notted in 2 arg.
+// how filepath works :
+// __dirname is the current directory
+// +
+// path to the file that notted in 2 arg.
 
+async function readContacts() {
   const data = await fs.readFile(contactsPath, "utf8");
 
   const contactsList = JSON.parse(data); // from string to object
 
   return contactsList;
 }
+
 async function getAllContacts() {
   return await readContacts();
 }
@@ -28,36 +29,18 @@ async function getContactById(contactID) {
   return contact;
 }
 
-async function updateContact(id, { name, email, phone }) {
-  try {
-    const data = await fs.readFile("contacts.json", "utf-8");
-
-    const contacts = JSON.parse(data);
-
-    const index = contacts.findIndex((contact) => contact.id === id);
-    if (index !== -1) {
-      contacts[index] = { ...contacts[index], name, email, phone };
-    } else {
-      throw new Error(`Contact with id ${id} not found`);
-    }
-
-    await fs.writeFile("contacts.json", JSON.stringify(contacts, null, 2));
-
-    console.log(`Contact with id ${id} updated successfully`);
-  } catch (error) {
-    console.error("Failed to update contact:", error);
-  }
+async function updateContacts(contacts) {
+  return fs.writeFile(contactsPath, JSON.stringify(contacts), "utf8");
 }
 
-async function addContact(name, email, phone) {
-  const contacts = await getAllContacts();
+async function addContact(contact) {
+  const contacts = await readContacts();
 
-  const newContact = { name, email, phone, id: nanoid(10) };
+  const newContact = { ...contact, id: nanoid(10) };
 
   contacts.push(newContact);
 
   await updateContacts(contacts);
-
   return newContact;
 }
 
@@ -73,7 +56,7 @@ async function removeContact(contactID) {
 module.exports = {
   getAllContacts,
   addContact,
-  updateContact,
+  updateContacts,
   getContactById,
   removeContact,
 };

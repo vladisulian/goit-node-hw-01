@@ -22,8 +22,7 @@ async function invokeAction({ action, id, name, email, phone }) {
         email,
         phone,
       });
-      console.log(newContact);
-
+      console.log("newContact ==>", newContact);
       break;
 
     case "updateContact":
