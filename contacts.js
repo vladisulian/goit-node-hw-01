@@ -12,8 +12,12 @@ async function getAllContacts() {
 
   const data = await fs.readFile(contactsPath, "utf8");
 
-  console.log("typeof data ===>", typeof JSON.parse(data)); // it's an object
-  return JSON.parse(data);
+  const contactsList = JSON.parse(data); // from string to object
+
+  console.info("\x1B[33m", "All contacts below:");
+  console.info(contactsList);
+  
+  return contactsList;
 }
 
 async function getContactById(contactID) {
@@ -24,7 +28,7 @@ async function getContactById(contactID) {
   return contact;
 }
 
-async function updateContact(id, updatedData) {
+async function updateContact(id, { name, email, phone }) {
   try {
     const data = await fs.readFile("contacts.json", "utf-8");
 
@@ -32,7 +36,7 @@ async function updateContact(id, updatedData) {
 
     const index = contacts.findIndex((contact) => contact.id === id);
     if (index !== -1) {
-      contacts[index] = { ...contacts[index], ...updatedData };
+      contacts[index] = { ...contacts[index], name, email, phone };
     } else {
       throw new Error(`Contact with id ${id} not found`);
     }
