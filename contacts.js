@@ -4,7 +4,7 @@ const { nanoid } = require("nanoid"); //? npm i nanoid@3 -D (it's mean i install
 
 const contactsPath = path.join(__dirname, "./db/contacts.json");
 
-async function getAllContacts() {
+async function readContacts() {
   //? how filepath works :
   //? __dirname is the current directory
   //? +
@@ -14,10 +14,10 @@ async function getAllContacts() {
 
   const contactsList = JSON.parse(data); // from string to object
 
-  console.info("\x1B[33m", "All contacts below:");
-  console.info(contactsList);
-  
   return contactsList;
+}
+async function getAllContacts() {
+  return await readContacts();
 }
 
 async function getContactById(contactID) {

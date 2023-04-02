@@ -7,7 +7,6 @@ async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "getAll":
       const allContacts = await contacts.getAllContacts();
-      console.log("\u001b[34m", "All contacts below:");
       console.log(allContacts);
       break;
 
@@ -41,6 +40,18 @@ async function invokeAction({ action, id, name, email, phone }) {
       console.warn("\x1B[31m Unknown action type!");
       break;
   }
+}
+
+const actionIndex = process.argv.indexOf("--action");
+
+if (actionIndex !== -1) {
+  const action = process.argv[actionIndex + 1];
+  const id = process.argv[actionIndex + 2];
+  const name = process.argv[actionIndex + 3];
+  const email = process.argv[actionIndex + 4];
+  const phone = process.argv[actionIndex + 5];
+
+  invokeAction({ action, id, name, email, phone });
 }
 
 // invokeAction({ action: "getAll" });
