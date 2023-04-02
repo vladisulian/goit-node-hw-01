@@ -25,14 +25,9 @@ async function invokeAction({ action, id, name, email, phone }) {
       console.log("newContact ==>", newContact);
       break;
 
-    case "updateContact":
-      const updatedContact = await contacts.updateContact(id, {
-        name,
-        email,
-        phone,
-      });
-      console.log(updatedContact);
-
+    case "removeContact":
+      const removedContact = await contacts.removeContact(id);
+      console.log("removedContact ==> ", removedContact);
       break;
 
     default:
@@ -52,8 +47,3 @@ if (actionIndex !== -1) {
 
   invokeAction({ action, id, name, email, phone });
 }
-
-// invokeAction({ action: "getAll" });
-// invokeAction({ action: "getById", id: "qdggE76Jtbfd9eWJHrssH" });
-
-// contacts.getAllContacts();

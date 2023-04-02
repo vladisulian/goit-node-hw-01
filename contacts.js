@@ -45,12 +45,17 @@ async function addContact(contact) {
 }
 
 async function removeContact(contactID) {
-  const contacts = await getAllContacts();
+  const contacts = await readContacts();
   const index = contacts.findIndex((contact) => contact.id === contactID);
 
+  console.log(index);
   if (index === -1) throw new Error("Contact not found");
 
-  contacts.splice(index, 1);
+  const removedContact = contacts.splice(index, 1);
+
+  await updateContacts(contacts);
+
+  return removedContact;
 }
 
 module.exports = {
