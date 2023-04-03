@@ -1,18 +1,16 @@
 const contacts = require("./contacts");
-
-// contacts.getAllContacts().then(console.log).catch(console.error);
-// contacts.getContactById("qdggE76Jtbfd9eWJHrssH").then(console.log).catch(console.error);
+const { program } = require("commander");
 
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "getAll":
       const allContacts = await contacts.getAllContacts();
-      console.log(allContacts);
+      console.table(allContacts);
       break;
 
     case "getById":
       const contact = await contacts.getContactById(id);
-      console.log(contact);
+      console.table(contact);
 
       break;
 
@@ -27,7 +25,10 @@ async function invokeAction({ action, id, name, email, phone }) {
 
     case "removeContact":
       const removedContact = await contacts.removeContact(id);
-      console.log("removedContact ==> ", removedContact);
+      console.log(
+        "This contact has been removed from the db ==> ",
+        removedContact
+      );
       break;
 
     default:
@@ -36,14 +37,15 @@ async function invokeAction({ action, id, name, email, phone }) {
   }
 }
 
-const actionIndex = process.argv.indexOf("--action");
+program
+  .option("-a, --action <action>", "Action to perform")
+  .option("-id, --id <id>", "Id of the contact")
+  .option("-n, --name <name>", "Contact name")
+  .option("-m, --email <email>", "Contact email")
+  .option("-p, --phone <phone>", "Contact phone");
 
-if (actionIndex !== -1) {
-  const action = process.argv[actionIndex + 1];
-  const id = process.argv[actionIndex + 2];
-  const name = process.argv[actionIndex + 3];
-  const email = process.argv[actionIndex + 4];
-  const phone = process.argv[actionIndex + 5];
+program.parse(process.argv);
 
-  invokeAction({ action, id, name, email, phone });
-}
+const options = program.opts();
+
+invokeAction(options);
